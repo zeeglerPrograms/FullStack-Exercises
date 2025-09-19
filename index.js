@@ -4,6 +4,7 @@ const Person = require('./models/person')
 
 const app = express()
 var morgan = require('morgan')
+const note = require('../backend/models/note')
 
 
 app.use(express.json())
@@ -47,15 +48,9 @@ app.get('/api/persons', (request, response) => {
 
 app.get('/api/persons/:id', (request, response) => {
     const id = request.params.id
-    const persons = response
-    console.log(`Perosons: ${persons}`)
-    // const person = persons.find(person => person.id === id)
-
-    if (person) {
+    Person.findById(request.params.id).then(person => {
         response.json(person)
-    }else {
-        response.status(404).end()
-    }
+    })
     
 })
 
@@ -85,12 +80,14 @@ app.post('/api/persons', (request, response) => {
 
     const targetKey = 'name'
     const targetValue = body.name
-    const foundObject = persons.find(person => person[targetKey] === targetValue)
-    if (foundObject){
-        return response.status(400).json({
-            error: 'Name already included'
-        })
-    }
+
+    console.log(body[targetKey])
+    // const foundObject = body.find(person => person[targetKey] === targetValue)
+    // if (foundObject){
+    //     return response.status(400).json({
+    //         error: 'Name already included'
+    //     })
+    // }
 
     if (!body.name) {
         return response.status(400).json({
