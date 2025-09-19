@@ -15,28 +15,7 @@ morgan.token('body', (req) => {
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 
-let persons = [
-    { 
-      "id": "1",
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": "2",
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": "3",
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": "4",
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
-]
+
 
 app.get('/api/persons', (request, response) => {
     Person.find({}).then(persons => {
@@ -53,11 +32,11 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-    let pLength = persons.length
-    const now = new Date()
-    let message = `Phonebook has info for ${pLength} people.
-        ${now}`
-    response.send(message)
+    // let pLength = persons.length
+    // const now = new Date()
+    // let message = `Phonebook has info for ${pLength} people.
+    //     ${now}`
+    // response.send(message)
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
@@ -68,19 +47,15 @@ app.delete('/api/persons/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
-const generateId = () => {
-    newId = Math.random() * 10000
-    return newId
-}
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     
     const body = request.body
 
-    const targetKey = 'name'
-    const targetValue = body.name
+    // const targetKey = 'name'
+    // const targetValue = body.name
 
-    console.log(body[targetKey])
+    // console.log(body[targetKey])
     // const foundObject = body.find(person => person[targetKey] === targetValue)
     // if (foundObject){
     //     return response.status(400).json({
@@ -88,11 +63,7 @@ app.post('/api/persons', (request, response) => {
     //     })
     // }
 
-    if (!body.name) {
-        return response.status(400).json({
-        error: 'Missing Name'
-        })
-    }else if (!body.number) {
+    if (!body.number) {
         return response.status(400).json({
             error: 'Missing Phone Number'
         })
@@ -103,9 +74,11 @@ app.post('/api/persons', (request, response) => {
         number: body.number,
     })
 
-    person.save().then(savedPerson => {
+    person.save()
+    .then(savedPerson => {
         response.json(savedPerson)
     })
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
