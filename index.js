@@ -47,7 +47,9 @@ app.get('/api/persons', (request, response) => {
 
 app.get('/api/persons/:id', (request, response) => {
     const id = request.params.id
-    const person = persons.find(person => person.id === id)
+    const persons = response
+    console.log(`Perosons: ${persons}`)
+    // const person = persons.find(person => person.id === id)
 
     if (person) {
         response.json(person)
@@ -102,10 +104,10 @@ app.post('/api/persons', (request, response) => {
 
     const person = new Person({
         name: body.name,
-        number: body.number
+        number: body.number,
     })
 
-    Person.save().then(savedPerson => {
+    person.save().then(savedPerson => {
         response.json(savedPerson)
     })
 })
