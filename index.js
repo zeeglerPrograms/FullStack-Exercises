@@ -4,7 +4,6 @@ const Person = require('./models/person')
 
 const app = express()
 var morgan = require('morgan')
-const note = require('../backend/models/note')
 
 
 app.use(express.json())
