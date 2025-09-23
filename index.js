@@ -24,7 +24,7 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = request.params.id
+  const id = request.params.idcd
   Person.findById(id).then(person => {
     response.json(person)
   })
