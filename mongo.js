@@ -23,11 +23,11 @@ const personSchema = new mongoose.Schema({
 const Person = mongoose.model('person', personSchema)
 
 const person = new Person({
-    name: personToAdd,
-    phone: newPhoneNumber
+  name: personToAdd,
+  phone: newPhoneNumber
 })
 
-person.save().then(result => {
+person.save().then(() => {
   console.log('person saved!')
   mongoose.connection.close()
 })
